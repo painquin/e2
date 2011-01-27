@@ -6,7 +6,8 @@
 
 const char *log_level_names[] = {
 	"DEBUG",
-	"MONITOR"
+	"MONITOR",
+	"ERROR"
 };
 
 void e2log(enum LOG_LEVEL lvl, const char *fmt, ...) {

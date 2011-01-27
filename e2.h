@@ -8,11 +8,12 @@
 */
 enum LOG_LEVEL
 {
-	LOG_DEBUG,
-	LOG_MONITOR
+	LOG_DBG,
+	LOG_MON,
+	LOG_ERR
 };
 
-
+extern const char *log_level_names[];
 extern void e2log(enum LOG_LEVEL, const char *, ... );
 
 
