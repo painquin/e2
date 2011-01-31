@@ -126,4 +126,34 @@ void net_stop_server(net_server *server, const char *reason)
 	pthread_join(server->net_listener, NULL);
 }
 
+#define INITIAL_MSG_ALLOC 256
+
+net_outgoing_message *net_create_message(net_msg_flags flags)
+{
+	net_outgoing_message *ret = malloc(sizeof(net_outgoing_message));
+	ret->flags = flags;
+	ret->allocated_length = INITIAL_MSG_ALLOC;
+	ret->pos = 0;
+	ret->buffer = malloc(INITIAL_MSG_ALLOC);
+
+	return ret;
+}
+
+int resize_message(net_outgoing_message *msg)
+{
+	char *b;
+	int new_size = msg->allocated_length << 1;
+	// TODO check for overflow
+	b = realloc(msg->buffer, new_size);
+	
+	if (b == NULL)
+		return 1;
+
+	msg->allocated_length = new_size;
+
+	if (b == msg->buffer) return 0;
+	msg->buffer = b;
+	return 0;
+}
+
 
