@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 		{
 			--shutdown_counter;
 		}
-		sleep(0);
+		sleep(100);
 	}
 	
 	net_shutdown();
