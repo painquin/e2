@@ -26,7 +26,7 @@ struct net_srv_t
 };
 
 
-extern net_server *net_create_server(short int port, const char *application_name);
+extern net_server *net_create_server(int port, const char *application_name);
 extern void net_free_server(net_server *server);
 extern void net_start_server(net_server *server, int backlog);
 

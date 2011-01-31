@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <errno.h>
 
 #include <pthread.h>
 
@@ -19,14 +20,16 @@
 /*
 	Note: this function is IPv4 for now
 */
-net_server *net_create_server(short int port, const char *application_name)
+net_server *net_create_server(int port, const char *application_name)
 {
 	char buff[8];
 	int status;
 	struct addrinfo hints, *res;
 	net_server *ret = malloc(sizeof(net_server));
 
-	ret->config.port = port;
+	e2log(LOG_MON, "Creating server on port %u", (int)port);
+
+	ret->config.port = htons(port);
 	ret->config.application_name = application_name;
 	
 	ret->socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -75,11 +78,29 @@ void net_free_server(net_server *server)
 
 static void * net_run_server(void *arg)
 {
+	char buffer[1024];
+	char addrbuff[INET_ADDRSTRLEN];
+
 	net_server *server = (net_server *)arg;
+	struct sockaddr from;
+	int alen, rlen;
 	while(server->running) {
+		alen = sizeof(from);
+		rlen = recvfrom(server->socket, buffer, 1024, 0, &from, &alen);
+		if (rlen == -1)
+		{
+			e2log(LOG_ERR, "recvfrom: %s", strerror(errno));
+		}
+		else
+		{
+			buffer[rlen] = 0;
+			inet_ntop(AF_INET,
+					&((struct sockaddr_in *)&from)->sin_addr,
+					addrbuff,
+					INET_ADDRSTRLEN);
 
-
-		sleep(0);
+			e2log(LOG_MON, "Message from %s: %s", addrbuff, buffer);
+		}
 	}
 	return NULL;
 }
