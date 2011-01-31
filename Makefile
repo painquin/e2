@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-fPIC -g -Werror
 LFLAGS=-llua -luuid -lpthread
 
-OFILES=main.o util.o net.o
+OFILES=main.o util.o net.o fixed.o
 
 
 e2server: $(OFILES)
