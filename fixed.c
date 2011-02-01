@@ -21,7 +21,7 @@ fix fixdiv(fix a, fix b)
 	return ((int64_t)a << FIXBITS) / b;
 }
 
-fix fix2float(fix f)
+float fix2float(fix f)
 {
 	return ((float)f / (1 << FIXBITS));
 }
