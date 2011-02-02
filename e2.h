@@ -16,30 +16,25 @@ enum LOG_LEVEL
 extern const char *log_level_names[];
 extern void e2log(enum LOG_LEVEL, const char *, ... );
 
-
-typedef struct {
-	uuid_t id;
-} Entity;
-
-
 typedef struct {
 	uuid_t id;
 	char *name;
+	char *table_name;
 	int num_fields;
 	//todo: field definitions
-} ComponentType;
+} component_type;
 
 typedef struct {
 	uuid_t id;
+	uuid_t entity_id;
 	ComponentType *type;
-	Entity *entity;
 	// fields
-} Component;
+} component;
 
 typedef struct {
 	uuid_t id;
 	char *name;
 	char *script;
-} System;
+} system;
 
 
