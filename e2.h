@@ -27,7 +27,7 @@ typedef struct {
 typedef struct {
 	uuid_t id;
 	uuid_t entity_id;
-	ComponentType *type;
+	component_type *type;
 	// fields
 } component;
 
@@ -35,6 +35,6 @@ typedef struct {
 	uuid_t id;
 	char *name;
 	char *script;
-} system;
+} e2system;
 
 
